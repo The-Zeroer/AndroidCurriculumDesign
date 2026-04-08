@@ -33,5 +33,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "CurriculumDesign"
-include(":app")
- 
+include(":app-user")
+include(":app-admin")
+include(":core")
