@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 服务器地址输入框（对应 et_server_address） -->
+    <EditText
+        android:id="@+id/et_server_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入服务器地址"
+        android:textSize="15sp"
+        android:inputType="text"/>
+
+    <!-- 按钮栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <!-- 取消按钮（对应 btn_cancel） -->
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/user_login_btn"
+            android:textColor="@color/user_white"/>
+
+        <!-- 确定按钮（对应 btn_confirm） -->
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            android:backgroundTint="@color/user_login_btn"
+            android:textColor="@color/user_white"/>
+
+    </LinearLayout>
+
+</LinearLayout>

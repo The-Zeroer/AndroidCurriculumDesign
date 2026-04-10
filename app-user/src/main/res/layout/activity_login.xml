@@ -1,19 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/main_content_root"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.login.LoginActivity">
+    android:background="@color/user_white"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- 头像展示 -->
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@color/user_border_gray"
+        android:src="@drawable/default_avatar" />
+
+    <!-- 账号输入框 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/account"
+            android:textColor="@color/user_black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/account"
+            android:inputType="text"
+            android:textColor="@color/user_black"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- 账号分割线 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/user_border_gray"
+        android:textStyle="bold"/>
+
+    <!-- 密码输入框 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:textStyle="bold">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/password"
+            android:textColor="@color/user_black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColor="@color/user_black"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- 密码分割线 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/user_border_gray" />
+
+    <!-- 记住密码&自动登录 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_remember_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/user_white"
+            android:text="@string/remember_pwd"
+            android:textColor="@color/user_black"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <CheckBox
+            android:id="@+id/cb_auto_login"
+            android:layout_width="122dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/user_white"
+            android:text="@string/auto_login"
+            android:textColor="@color/user_black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 登录按钮 -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/user_login_btn"
+        android:elevation="0dp"
+        android:stateListAnimator="@null"
+        android:text="@string/login"
+        android:textColor="@color/user_white"
+        android:textSize="18sp" />
+
+    <!-- 左下角 网络配置 -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
     <TextView
+        android:id="@+id/tv_network_config"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="网络配置"
+        android:textSize="20sp"
+        android:textColor="@color/user_black"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

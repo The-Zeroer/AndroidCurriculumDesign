@@ -1,54 +1,59 @@
 package com.thezeroer.exercise.android.curriculumdesign.user.feature.login;
 
-import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.CheckBox;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
 import com.thezeroer.exercise.android.curriculumdesign.user.R;
-import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.MainActivity;
 
-/**
- * 登录活动
- *
- * @author TBRTZ
- * @version 1.0.0
- * @since 2026/04/08
- */
-public class LoginActivity extends BaseActivity<LoginViewModel> {
+public class LoginActivity extends AppCompatActivity {
+
+    private ImageView ivAvatar;
+    private EditText etAccount, etPassword;
+    private CheckBox cbRememberPwd, cbAutoLogin;
+    private Button btnLogin;
+    private TextView tvNetworkConfig;
+
+    // 保存网络配置地址
+    private String currentServerAddress = "";
 
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_login;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        initViews();
+        initNetworkConfig();
     }
 
-    @Override
-    protected void onInitView() {
-
+    private void initViews() {
+        ivAvatar = findViewById(R.id.iv_avatar);
+        etAccount = findViewById(R.id.et_account);
+        etPassword = findViewById(R.id.et_password);
+        cbRememberPwd = findViewById(R.id.cb_remember_pwd);
+        cbAutoLogin = findViewById(R.id.cb_auto_login);
+        btnLogin = findViewById(R.id.btn_login);
+        tvNetworkConfig = findViewById(R.id.tv_network_config);
     }
 
-    @Override
-    protected void onInitHandler() {
+    // ===================== 网络配置点击 & 接收结果 =====================
+    private void initNetworkConfig() {
+        tvNetworkConfig.setOnClickListener(v -> {
+            NetworkConfigDialog dialog = new NetworkConfigDialog(LoginActivity.this);
+            dialog.setOnConfigSubmitListener(address -> {
+                // 这里收到弹窗返回的地址！
+                currentServerAddress = address;
 
-    }
-
-    @Override
-    protected void onInitObserve() {
-        viewModel.loginStatus.observe(this, resource -> {
-            if (resource == null || resource.isLoading()) {
-                return;
-            }
-            if (resource.isFailed()) {
-                Toast.makeText(this, "登录失败: " + (resource.message != null ? resource.message : "未知连接错误"), Toast.LENGTH_LONG).show();
-                return;
-            }
-            Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+                // 演示：收到后可以打印/存储/使用
+                Toast.makeText(LoginActivity.this,
+                        "已配置：" + currentServerAddress,
+                        Toast.LENGTH_LONG).show();
+            });
+            dialog.show();
         });
-    }
-
-    @Override
-    protected void onInitData() {
-        viewModel.login("123", "123", true, true, "aly.thezeroer.com", 7709);
     }
 }
