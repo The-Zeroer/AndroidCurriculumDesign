@@ -10,4 +10,5 @@ import androidx.fragment.app.Fragment;
  * @since 2026/04/08
  */
 public class OrganizationFragment extends Fragment {
+
 }
