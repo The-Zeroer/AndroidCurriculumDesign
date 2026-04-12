@@ -1,7 +1,13 @@
 package com.thezeroer.exercise.android.curriculumdesign.user.feature.main;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +21,6 @@ import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.contact
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.menu.MenuFragment;
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.messages.MessagesFragment;
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.organization.OrganizationFragment;
-import com.thezeroer.exercise.android.curriculumdesign.user.feature.profile.ProfileActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -71,10 +76,48 @@ public class MainActivity extends BaseActivity {
         });
 
         // 点击头像跳转个人资料页（假设 ProfileActivity 已存在）
-        ivAvatar.setOnClickListener(v -> {
-            // 实现跳转到 ProfileActivity
-//             startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-        });
+        // 实现跳转到 ProfileActivity
+        ivAvatar.setOnClickListener(this::showProfilePopup);
+    }
+    private void showProfilePopup(View anchorView) {
+        // 加载个人信息弹窗布局
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_profile, null);
+
+        // 初始化弹窗内的控件（可绑定动态数据，这里使用静态演示）
+        TextView tvName = popupView.findViewById(R.id.tv_popup_name);
+        TextView tvEmail = popupView.findViewById(R.id.tv_popup_email);
+        TextView tvAccountId = popupView.findViewById(R.id.tv_popup_account_id);
+
+        // 可根据登录用户信息动态设置
+        tvName.setText("张伟");
+        tvEmail.setText("zhang.wei@example.com");
+        tvAccountId.setText("账号ID: 1002345");
+
+        // 创建 PopupWindow
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+
+        // 必须设置背景，否则 outsideTouchable 无效
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);  // 点击外部关闭
+        popupWindow.setAnimationStyle(android.R.style.Animation_Dialog); // 淡入淡出效果
+
+        // 计算显示位置：锚点正下方居中
+        int[] location = new int[2];
+        anchorView.getLocationOnScreen(location);
+        int anchorCenterX = location[0] + anchorView.getWidth() / 2;
+        int popupWidth = popupView.getMeasuredWidth(); // 注意此时尚未测量，需先调用 measure
+        // 手动测量弹窗宽度
+        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popupWidth = popupView.getMeasuredWidth();
+        int x = anchorCenterX - popupWidth / 2;
+        int y = location[1] + anchorView.getHeight() + 10; // 向下偏移10dp
+
+        popupWindow.showAtLocation(anchorView, Gravity.TOP | Gravity.START, x, y);
     }
 
     /**
