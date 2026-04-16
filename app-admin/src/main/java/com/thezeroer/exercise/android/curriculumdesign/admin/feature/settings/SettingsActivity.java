@@ -1,7 +1,7 @@
 package com.thezeroer.exercise.android.curriculumdesign.admin.feature.settings;
 
 import com.thezeroer.exercise.android.curriculumdesign.admin.R;
-import com.thezeroer.exercise.android.curriculumdesign.core.BaseActivity;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
 
 /**
  * 设置活动

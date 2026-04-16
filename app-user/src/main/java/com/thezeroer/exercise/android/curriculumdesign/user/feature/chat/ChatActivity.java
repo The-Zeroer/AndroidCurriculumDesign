@@ -1,6 +1,6 @@
 package com.thezeroer.exercise.android.curriculumdesign.user.feature.chat;
 
-import com.thezeroer.exercise.android.curriculumdesign.core.BaseActivity;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
 import com.thezeroer.exercise.android.curriculumdesign.user.R;
 
 /**
