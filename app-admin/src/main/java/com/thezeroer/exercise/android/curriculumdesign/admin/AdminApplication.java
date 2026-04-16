@@ -1,20 +1,28 @@
 package com.thezeroer.exercise.android.curriculumdesign.admin;
 
-import com.thezeroer.exercise.android.curriculumdesign.admin.nexalithic.NexalithicService;
-import com.thezeroer.exercise.android.curriculumdesign.core.BaseApplication;
+import com.thezeroer.exercise.android.curriculumdesign.admin.data.local.AdminDataBase;
+import com.thezeroer.exercise.android.curriculumdesign.admin.data.remote.AdminNetworkService;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.BaseApplication;
+import com.thezeroer.exercise.android.curriculumdesign.core.data.local.BaseDataBase;
+import com.thezeroer.exercise.android.curriculumdesign.core.data.remote.BaseNetworkService;
 
 import java.io.IOException;
 
-/**
- * 管理员应用程序
- *
- * @author TBRTZ
- * @version 1.0.0
- * @since 2026/04/08
- */
-public class AdminApplication extends BaseApplication<NexalithicService> {
+public class AdminApplication extends BaseApplication {
     @Override
-    protected NexalithicService onCreateNexalithicService() throws IOException {
-        return new NexalithicService();
+    protected BaseDataBase onCreateDatabase() {
+        return AdminDataBase.getInstance(this);
+    }
+
+    @Override
+    protected BaseNetworkService onCreateNetworkService() throws IOException {
+        BaseNetworkService networkService = new AdminNetworkService();
+        networkService.start();
+        return networkService;
+    }
+
+    @Override
+    protected void onInit() {
+
     }
 }

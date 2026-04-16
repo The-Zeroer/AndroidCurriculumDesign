@@ -10,6 +10,8 @@ constraintlayout = "2.2.1"
 
 nexalithic = "0.1.0"
 slf4jApi = "2.0.17"
+room = "2.6.1"
+lombok = "1.18.30"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -23,6 +25,9 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 nexalithic-core = { group = "com.thezeroer.nexalithic", name = "nexalithic-core", version.ref = "nexalithic" }
 nexalithic-client = { group = "com.thezeroer.nexalithic", name = "nexalithic-client", version.ref = "nexalithic" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApi" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

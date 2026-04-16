@@ -38,6 +38,12 @@ dependencies {
 
     api(libs.slf4j.api)
 
+    api(libs.lombok)
+    annotationProcessor(libs.lombok)
+
+    api(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)

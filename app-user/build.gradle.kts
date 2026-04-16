@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    annotationProcessor(libs.lombok)
+    annotationProcessor(libs.room.compiler)
 
     implementation(libs.appcompat)
     implementation(libs.material)

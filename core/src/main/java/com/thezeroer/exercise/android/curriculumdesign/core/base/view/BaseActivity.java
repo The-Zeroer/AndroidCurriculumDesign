@@ -1,6 +1,7 @@
-package com.thezeroer.exercise.android.curriculumdesign.core;
+package com.thezeroer.exercise.android.curriculumdesign.core.base.view;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.LayoutRes;
@@ -9,15 +10,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.thezeroer.exercise.android.curriculumdesign.core.R;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.BaseViewModel;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.ViewModelHelper;
+
 /**
  * 基础活动
- * </br>对应的布局文件中的根id请统一定义为 android:id="@id/main_content_root"
+ * </br>对应的布局文件中的根id请统一定义为 android:id="@id/main_content_root"或重写{@link BaseActivity#getRootContentId()}
  *
  * @author TBRTZ
  * @version 1.0.0
  * @since 2026/04/08
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatActivity {
+    protected VM viewModel;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -27,14 +33,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         // 2.设置内容布局
         setContentView(getLayoutId());
         // 3. 自动处理系统栏（状态栏、导航栏）内边距，防止 UI 被遮挡
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_content_root), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(getRootContentId()), (v, insets) -> {
             Insets system_bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(system_bars.left, system_bars.top, system_bars.right, system_bars.bottom);
             return insets;
         });
         // 4. 调用初始化方法
+        initViewModel();
         onInitView();
         onInitHandler();
+        onInitObserve();
         onInitData();
     }
 
@@ -53,13 +61,39 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void onInitView();
 
     /**
-     * 子类实现：绑定组件事件
+     * 子类可选实现：绑定组件事件
      * 所有的点击事件、监听器在此处设置
      */
-    protected abstract void onInitHandler();
+    protected void onInitHandler() {
+    }
+
+    /**
+     * 子类可选实现：初始化观察者
+     * 所有的 LiveData/Flow 监听都放在这里
+     */
+    protected void onInitObserve() {
+    }
 
     /**
      * 子类可选实现：初始化数据/请求
      */
-    protected void onInitData() {}
+    protected void onInitData() {
+    }
+
+    /**
+     * 子类可选实现：获取根内容ID
+     *
+     * @return int
+     */
+    protected int getRootContentId() {
+        return R.id.main_content_root;
+    }
+
+    private void initViewModel() {
+        try {
+            viewModel = ViewModelHelper.createViewModel(this, ViewModelHelper.getViewModelClass(this, 0));
+        } catch (Exception e) {
+            Log.e("BaseActivity", "ViewModel 初始化失败", e);
+        }
+    }
 }
