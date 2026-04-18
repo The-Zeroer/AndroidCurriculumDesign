@@ -3,44 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp">
 
-    <!-- 服务器地址输入框（对应 et_server_address） -->
     <EditText
-        android:id="@+id/et_server_address"
+        android:id="@+id/et_server_host"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入服务器地址"
-        android:textSize="15sp"
-        android:inputType="text"/>
+        android:hint="服务器地址（如 192.168.1.100）"/>
 
-    <!-- 按钮栏 -->
+    <EditText
+        android:id="@+id/et_server_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:hint="端口（如 8080）"
+        android:inputType="number"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal"
         android:gravity="end">
 
-        <!-- 取消按钮（对应 btn_cancel） -->
         <Button
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="取消"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/user_login_btn"
-            android:textColor="@color/user_white"/>
+            android:text="取消"/>
 
-        <!-- 确定按钮（对应 btn_confirm） -->
         <Button
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="确定"
-            android:backgroundTint="@color/user_login_btn"
-            android:textColor="@color/user_white"/>
-
+            android:layout_marginStart="16dp"
+            android:text="确定"/>
     </LinearLayout>
 
 </LinearLayout>
