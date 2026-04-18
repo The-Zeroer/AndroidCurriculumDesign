@@ -12,12 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseFragment;
 import com.thezeroer.exercise.android.curriculumdesign.user.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsFragment extends Fragment {
+public class ContactsFragment extends BaseFragment {
 
     private RecyclerView rvContacts;
     private ContactAdapter adapter;
@@ -54,6 +55,21 @@ public class ContactsFragment extends Fragment {
         });
 
         rvContacts.setAdapter(adapter);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    protected void onInitView(View view) {
+
+    }
+
+    @Override
+    protected void onInitHandler() {
+
     }
 
     private void loadMockData() {

@@ -21,7 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".feature.main.MainActivity"/>
+        <activity android:name=".feature.main.MainActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".feature.chat.ChatActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
     </application>
 
 </manifest>
