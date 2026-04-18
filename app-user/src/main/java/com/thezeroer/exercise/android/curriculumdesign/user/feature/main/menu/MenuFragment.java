@@ -3,24 +3,42 @@ package com.thezeroer.exercise.android.curriculumdesign.user.feature.main.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.fragment.app.Fragment;
-import com.thezeroer.exercise.android.curriculumdesign.user.feature.settings.SettingsActivity;
 
-public class MenuFragment extends Fragment {
+import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseFragment;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.NoViewModel;  // 改成 NoViewModel
+import com.thezeroer.exercise.android.curriculumdesign.user.feature.settings.SettingsActivity;
+import com.thezeroer.exercise.android.curriculumdesign.user.feature.about.AboutActivity;
+
+// 关键修改：BaseFragment<BaseViewModel> 改成 BaseFragment<NoViewModel>
+public class MenuFragment extends BaseFragment<NoViewModel> {
+
+    private TextView avatar;
+    private TextView name;
+    private TextView account;
+    private TextView itemSetting;
+    private TextView itemAbout;
+    private LinearLayout root;
 
     public MenuFragment() {
-        // 必须保留空构造
+        super();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // 1. 根布局（微信灰色背景）
-        LinearLayout root = new LinearLayout(getContext());
+    protected int getLayoutId() {
+        return android.R.layout.activity_list_item;
+    }
+
+    @Override
+    protected void onInitView(View view) {
+        // 清空自带内容
+        ((ViewGroup) view).removeAllViews();
+
+        // 创建你的界面
+        root = new LinearLayout(getContext());
         root.setOrientation(LinearLayout.VERTICAL);
         root.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -29,14 +47,13 @@ public class MenuFragment extends Fragment {
         root.setBackgroundColor(0xFFF5F5F5);
         root.setPadding(dp2px(20), 0, dp2px(20), 0);
 
-        // 2. 用户信息区域（头像+用户名+账号）
+        // 用户信息区域
         LinearLayout userLayout = new LinearLayout(getContext());
         userLayout.setOrientation(LinearLayout.HORIZONTAL);
         userLayout.setGravity(Gravity.CENTER_VERTICAL);
         userLayout.setPadding(0, dp2px(40), 0, dp2px(30));
 
-        // 头像
-        TextView avatar = new TextView(getContext());
+        avatar = new TextView(getContext());
         avatar.setLayoutParams(new LinearLayout.LayoutParams(dp2px(80), dp2px(80)));
         avatar.setBackgroundColor(0xFFDDDDDD);
         avatar.setGravity(Gravity.CENTER);
@@ -44,17 +61,16 @@ public class MenuFragment extends Fragment {
         avatar.setTextSize(14);
         avatar.setTextColor(0xFF666666);
 
-        // 文字区域
         LinearLayout textGroup = new LinearLayout(getContext());
         textGroup.setOrientation(LinearLayout.VERTICAL);
         textGroup.setPadding(dp2px(15), 0, 0, 0);
 
-        TextView name = new TextView(getContext());
+        name = new TextView(getContext());
         name.setText("张三");
         name.setTextSize(20);
         name.setTextColor(0xFF000000);
 
-        TextView account = new TextView(getContext());
+        account = new TextView(getContext());
         account.setText("帐号：zhangsan123");
         account.setTextSize(14);
         account.setTextColor(0xFF666666);
@@ -65,34 +81,45 @@ public class MenuFragment extends Fragment {
         userLayout.addView(avatar);
         userLayout.addView(textGroup);
 
-        // 3. 分割线
+        // 分割线
         View line = new View(getContext());
         line.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1));
         line.setBackgroundColor(0xFFE0E0E0);
 
-        // 4. 设置按钮（跳转到组长的SettingsActivity）
-        TextView itemSetting = createItem("设置", v -> {
-            Intent intent = new Intent(getActivity(), SettingsActivity.class);
-            startActivity(intent);
-        });
+        // 初始化设置和关于菜单项
+        itemSetting = createItem("设置");
+        itemAbout = createItem("关于");
 
-        // 5. 关于按钮（跳转到弹窗样式的AboutActivity）
-        TextView itemAbout = createItem("关于", v -> {
-            Intent intent = new Intent(getActivity(), AboutActivity.class);
-            startActivity(intent);
-        });
-
-        // 6. 组装所有控件
+        // 组装布局
         root.addView(userLayout);
         root.addView(line);
         root.addView(itemSetting);
         root.addView(itemAbout);
 
-        return root;
+        // 把你的布局加到Fragment的根View里
+        ((ViewGroup) view).addView(root);
     }
 
-    // 创建菜单项工具方法
-    private TextView createItem(String text, View.OnClickListener click) {
+    @Override
+    protected void onInitHandler() {
+        // 设置按钮点击事件
+        itemSetting.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 关于按钮点击事件
+        itemAbout.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                Intent intent = new Intent(getActivity(), AboutActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private TextView createItem(String text) {
         TextView item = new TextView(getContext());
         item.setText(text);
         item.setTextSize(16);
@@ -100,13 +127,13 @@ public class MenuFragment extends Fragment {
         item.setBackgroundColor(0xFFFFFFFF);
         item.setTextColor(0xFF333333);
         item.setGravity(Gravity.CENTER_VERTICAL);
-        item.setOnClickListener(click);
         return item;
     }
 
-    // dp转px工具方法
     private int dp2px(int dp) {
-        if (getResources() == null) return dp;
+        if (getContext() == null || getResources() == null) {
+            return dp;
+        }
         float density = getResources().getDisplayMetrics().density;
         return (int) (dp * density + 0.5f);
     }

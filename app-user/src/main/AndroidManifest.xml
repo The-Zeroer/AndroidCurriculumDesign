@@ -25,7 +25,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".feature.main.menu.AboutActivity"
+            android:name=".feature.about.AboutActivity"
             android:exported="false" />
 
     </application>
