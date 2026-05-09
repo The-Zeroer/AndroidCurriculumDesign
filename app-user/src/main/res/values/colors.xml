@@ -3,4 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="purple_500">#6200EE</color>
+    <color name="user_white">#FFFFFF</color>
+    <color name="user_login_btn">#0099FF</color>
+    <color name="user_text_gray">#666666</color>
+    <color name="user_border_gray">#E0E0E0</color>
+    <color name="user_black">#000000</color>
 </resources>
