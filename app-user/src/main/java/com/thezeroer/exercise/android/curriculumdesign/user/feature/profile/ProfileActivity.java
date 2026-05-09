@@ -1,6 +1,8 @@
 package com.thezeroer.exercise.android.curriculumdesign.user.feature.profile;
 
+
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
+import com.thezeroer.exercise.android.curriculumdesign.user.R;
 
 /**
  * 个人资料活动
@@ -12,7 +14,7 @@ import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivi
 public class ProfileActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.activity_profile;
     }
 
     @Override
