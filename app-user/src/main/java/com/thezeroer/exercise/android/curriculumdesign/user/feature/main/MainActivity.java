@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
@@ -14,7 +15,6 @@ import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.contact
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.menu.MenuFragment;
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.messages.MessagesFragment;
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.organization.OrganizationFragment;
-
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.profile.ProfilePopup;
 
 public class MainActivity extends BaseActivity {
@@ -24,7 +24,8 @@ public class MainActivity extends BaseActivity {
     private ImageView ivAvatar;
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fragmentManager;
-    private ProfilePopup profilePopup; // 独立的弹窗对象
+    private ProfilePopup profilePopup;
+    private MainViewModel mainViewModel; // 添加 ViewModel 成员变量
 
     @Override
     protected int getLayoutId() {
@@ -38,6 +39,12 @@ public class MainActivity extends BaseActivity {
         ivAvatar = findViewById(R.id.iv_avatar);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        // 创建 ViewModel
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        // 初始化弹窗（传入 this 作为 LifecycleOwner）
+        profilePopup = new ProfilePopup(this, mainViewModel, this);
+
         // 设置 Toolbar 为 ActionBar
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -48,9 +55,6 @@ public class MainActivity extends BaseActivity {
 
         // 默认显示消息 Fragment
         loadFragment(new MessagesFragment(), "消息");
-
-        // 初始化个人信息弹窗
-        profilePopup = new ProfilePopup(this);
     }
 
     @Override
@@ -81,7 +85,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // 关闭弹窗，避免窗口泄漏
         if (profilePopup != null && profilePopup.isShowing()) {
             profilePopup.dismiss();
         }

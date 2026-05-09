@@ -34,7 +34,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 .inflate(R.layout.item_message, parent, false);
         return new ViewHolder(view);
     }
-
+    public void setData(List<MessageItem> newList) {
+        this.messageList = newList;
+        notifyDataSetChanged();
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MessageItem message = messageList.get(position);
