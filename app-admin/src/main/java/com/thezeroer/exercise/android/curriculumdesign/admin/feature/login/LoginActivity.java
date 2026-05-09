@@ -61,17 +61,15 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
                 Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
                 return;
             }
-//            if (serverIp.isEmpty()) {
-//                Toast.makeText(this, "请输入服务器地址", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//            if (serverPortStr.isEmpty()) {
-//                Toast.makeText(this, "请输入服务器端口", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
 
-            serverIp = "aly.thezeroer.com";
-            serverPortStr = "7709";
+            if (serverIp.isEmpty()) {
+                Toast.makeText(this, "请输入服务器地址", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (serverPortStr.isEmpty()) {
+                Toast.makeText(this, "请输入服务器端口", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // 保存配置
             saveConfig(account, password, serverIp, serverPortStr);
