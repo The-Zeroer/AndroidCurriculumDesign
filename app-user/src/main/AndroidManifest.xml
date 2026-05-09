@@ -27,6 +27,8 @@
             android:name=".feature.chat.ChatActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".feature.about.AboutActivity"
+            android:exported="true"/>
 
     </application>
 
