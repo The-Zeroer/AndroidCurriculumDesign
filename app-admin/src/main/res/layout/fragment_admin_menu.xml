@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA"
+    android:padding="24dp">
+
+    <!-- 管理员信息头部 -->
+    <LinearLayout
+        android:id="@+id/ll_admin_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="32dp">
+
+        <TextView
+            android:id="@+id/tv_admin_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="#E9ECEF"
+            android:gravity="center"
+            android:text="管理员"
+            android:textSize="13sp"
+            android:textColor="#495050"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="18dp">
+
+            <TextView
+                android:id="@+id/tv_admin_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="系统管理员"
+                android:textSize="20sp"
+                android:textColor="#212529"/>
+
+            <TextView
+                android:id="@+id/tv_admin_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="管理员账号：admin_root"
+                android:textSize="14sp"
+                android:textColor="#6C757D"
+                android:paddingTop="6dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 分割线 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DEE2E6"/>
+
+    <!-- 系统设置 -->
+    <TextView
+        android:id="@+id/tv_menu_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="系统设置"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#212529"
+        android:layout_marginTop="12dp"/>
+
+    <!-- 关于系统 -->
+    <TextView
+        android:id="@+id/tv_menu_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="关于系统"
+        android:textSize="16sp"
+        android:background="#FFFFFF"
+        android:textColor="#212529"
+        android:layout_marginTop="12dp"/>
+
+</LinearLayout>
