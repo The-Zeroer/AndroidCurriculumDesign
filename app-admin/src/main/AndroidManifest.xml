@@ -21,7 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".feature.main.MainActivity"/>
+        <activity android:name=".feature.main.MainActivity"
+            android:exported="true" />
+        <activity android:name=".feature.main.menu.FragmentPreviewActivity"
+            android:exported="true"/>
+        <activity android:name=".feature.about.AboutActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
