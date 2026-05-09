@@ -55,10 +55,11 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
     protected abstract int getLayoutId();
 
     /**
-     * 子类实现：初始化 UI 控件
+     * 子类可选实现：初始化 UI 控件
      * 此处仅执行 findViewById，不写逻辑
      */
-    protected abstract void onInitView();
+    protected void onInitView() {
+    }
 
     /**
      * 子类可选实现：绑定组件事件

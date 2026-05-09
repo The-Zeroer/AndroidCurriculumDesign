@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.model.Resource;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.remote.BaseNetworkService;
 import com.thezeroer.exercise.android.curriculumdesign.core.di.AppInjector;
-import com.thezeroer.nexalithic.client.event.LinkStatusListener;
+import com.thezeroer.nexalithic.client.manager.LinkStatusManager;
+import com.thezeroer.nexalithic.core.event.EventSubscription;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 连接仓库
@@ -22,16 +24,32 @@ public class ConnectionRepository extends BaseRepository {
 
     public LiveData<Resource<String>> connect(String host, int port) {
         MutableLiveData<Resource<String>> result = new MutableLiveData<>();
-        if (networkService.getLinkStatus() == LinkStatusListener.Status.LINKED) {
+        if (networkService.getLinkStatus() == LinkStatusManager.Status.LINKED) {
             result.setValue(Resource.success());
         } else {
-            networkService.onStatusTransitionOnce(LinkStatusListener.EventKey.of(LinkStatusListener.Status.LINKING, null), event -> {
-                if (event.to() == LinkStatusListener.Status.LINKED) {
-                    result.postValue(Resource.success());
-                } else {
-                    result.postValue(Resource.failed(event.reason().name()));
+            AtomicReference<EventSubscription> subscriptionRef = new AtomicReference<>();
+            EventSubscription subscription = networkService.getEventBus().subscribe(LinkStatusManager.Events.StatusTransition.class, event -> {
+                if (event.from() != LinkStatusManager.Status.LINKING) {
+                    return;
+                }
+                try {
+                    if (event.to() == LinkStatusManager.Status.LINKED) {
+                        result.postValue(Resource.success());
+                    } else {
+                        String message = event.reason().name();
+                        if (event.attachment() instanceof Exception exception) {
+                            message = message + ":" + exception.getMessage();
+                        }
+                        result.postValue(Resource.failed(message));
+                    }
+                } finally {
+                    EventSubscription sub = subscriptionRef.get();
+                    if (sub != null) {
+                        sub.unsubscribe();
+                    }
                 }
             });
+            subscriptionRef.set(subscription);
             new Thread(() -> {
                 try {
                     networkService.linkServer(new InetSocketAddress(host, port));

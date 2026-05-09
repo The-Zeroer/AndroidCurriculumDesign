@@ -10,11 +10,4 @@ public class AboutActivity extends BaseActivity<NoViewModel> {
     protected int getLayoutId() {
         return R.layout.activity_about;
     }
-
-    @Override
-    protected void onInitView() {
-        // 空实现
-    }
-
-
 }

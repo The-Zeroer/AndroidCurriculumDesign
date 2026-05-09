@@ -1,14 +1,13 @@
 package com.thezeroer.exercise.android.curriculumdesign.core.data.remote;
 
 import com.thezeroer.nexalithic.client.NexalithicClient;
-import com.thezeroer.nexalithic.client.event.LinkStatusListener;
-import com.thezeroer.nexalithic.client.event.Registration;
 import com.thezeroer.nexalithic.client.lifecycle.LifecycleManager;
+import com.thezeroer.nexalithic.client.manager.LinkStatusManager;
 import com.thezeroer.nexalithic.client.security.EmptyClientSecurityPolicy;
+import com.thezeroer.nexalithic.core.event.NexalithicEventBus;
 import com.thezeroer.nexalithic.core.io.thread.LoopThread;
 import com.thezeroer.nexalithic.core.messaging.task.NexalithicTask;
 import com.thezeroer.nexalithic.core.messaging.task.TaskFuture;
-import com.thezeroer.nexalithic.core.messaging.visual.TransferListenerGroup;
 import com.thezeroer.nexalithic.core.model.packet.business.BusinessPacket;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ public abstract class BaseNetworkService {
     public static final short[] Path_AuthLogin = new short[]{11, 11};
     public static final short[] Path_AuthLogout = new short[]{11, 12};
 
-    protected NexalithicClient nexalithicClient;
+    protected final NexalithicClient nexalithicClient;
 
     public BaseNetworkService() throws IOException {
         nexalithicClient = initNexalithicClient();
@@ -39,9 +38,7 @@ public abstract class BaseNetworkService {
     }
 
     public void linkServer(InetSocketAddress remote) throws Exception {
-        if (nexalithicClient.getLinkStatus() == LinkStatusListener.Status.UNLINKED) {
-            nexalithicClient.link(remote);
-        }
+        nexalithicClient.link(remote);
     }
 
     public boolean pushBusinessPacket(BusinessPacket packet) {
@@ -50,30 +47,15 @@ public abstract class BaseNetworkService {
     public TaskFuture submitTask(NexalithicTask.Builder taskBuilder) {
         return nexalithicClient.submit(taskBuilder);
     }
-    public TaskFuture submitTask(NexalithicTask.Builder taskBuilder, TransferListenerGroup.Builder transferVisualizerBuilder) {
-        return nexalithicClient.submit(taskBuilder, transferVisualizerBuilder);
-    }
-    public Registration onStatusTransition(LinkStatusListener.EventKey event, LinkStatusListener listener) {
-        return nexalithicClient.onStatusTransition(event, listener);
-    }
-    public Registration onStatusTransitionOnce(LinkStatusListener.EventKey event, LinkStatusListener listener) {
-        return nexalithicClient.onStatusTransitionOnce(event, listener);
-    }
-    public Registration onStatusTransition(LinkStatusListener.Status from, LinkStatusListener.Status to, LinkStatusListener listener) {
-        return nexalithicClient.onStatusTransition(from, to, listener);
-    }
-    public Registration onEnterStatus(LinkStatusListener.Status to, LinkStatusListener listener) {
-        return nexalithicClient.onEnterStatus(to, listener);
-    }
-    public Registration onLeaveStatus(LinkStatusListener.Status from, LinkStatusListener listener) {
-        return nexalithicClient.onLeaveStatus(from, listener);
-    }
-    public LinkStatusListener.Status getLinkStatus() {
-        return nexalithicClient.getLinkStatus();
-    }
 
+    public NexalithicEventBus getEventBus() {
+        return nexalithicClient.getEventBus();
+    }
     public LifecycleManager.State getState() {
         return nexalithicClient.getState();
+    }
+    public LinkStatusManager.Status getLinkStatus() {
+        return nexalithicClient.getLinkStatus();
     }
 
     private NexalithicClient initNexalithicClient() throws IOException {
