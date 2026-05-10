@@ -30,6 +30,15 @@
         <activity android:name=".feature.about.AboutActivity"
             android:exported="true"/>
 
+        <!-- 设置页：SettingsActivity-->
+        <activity android:name=".feature.settings.SettingsActivity"
+            android:exported="true" />
+
+        <!-- 个人信息页：PersonalInfoActivity-->
+        <activity android:name=".feature.settings.PersonalInfoActivity"/>
+
+        <!-- 修改密码页：ChangePwdActivity-->
+        <activity android:name=".feature.settings.ChangePwdActivity"/>
     </application>
 
 </manifest>
