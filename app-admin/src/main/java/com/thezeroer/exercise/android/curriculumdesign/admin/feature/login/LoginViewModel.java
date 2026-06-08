@@ -7,6 +7,9 @@ import com.thezeroer.exercise.android.curriculumdesign.core.base.model.Resource;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.BaseViewModel;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.repository.AuthRepository;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.repository.ConnectionRepository;
+import com.thezeroer.exercise.android.curriculumdesign.core.enums.AccountType;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 登录视图模型
@@ -26,31 +29,21 @@ public class LoginViewModel extends BaseViewModel {
         this.connectionRepository = connectionRepository;
         this.authRepository = authRepository;
     }
-
     public void login(String accountId, String accountPassword, boolean rememberMe, boolean autoLogin, String host, int port) {
         _loginStatus.setValue(Resource.loading());
-        LiveData<Resource<String>> connectSource = connectionRepository.connect(host, port);
-        _loginStatus.addSource(connectSource, connectResource -> {
-            if (connectResource.isLoading()) {
-                return;
-            }
-            _loginStatus.removeSource(connectSource);
-            if (connectResource.isFailed()) {
-                _loginStatus.setValue(Resource.failed("连接服务器失败: " + connectResource.message));
-                return;
-            }
-            LiveData<Resource<String>> authSource = authRepository.login(accountId, accountPassword, rememberMe, autoLogin);
-            _loginStatus.addSource(authSource, authResource -> {
-                if (authResource.isLoading()) {
-                    return;
-                }
-                _loginStatus.removeSource(authSource);
-                if (authResource.isFailed()) {
-                    _loginStatus.setValue(Resource.failed("登录失败: " + authResource.message));
-                    return;
-                }
-                _loginStatus.setValue(authResource);
-            });
-        });
+        connectionRepository.connect(host, port)
+                .thenCompose(connectResource -> {
+                    if (connectResource.isFailed()) {
+                        return CompletableFuture.completedFuture(
+                                Resource.failed("连接服务器失败: " + connectResource.message)
+                        );
+                    }
+                    return authRepository.login(accountId, accountPassword, rememberMe, autoLogin, AccountType.ADMIN);
+                })
+                .thenAccept(_loginStatus::postValue)
+                .exceptionally(ex -> {
+                    _loginStatus.postValue(Resource.failed("系统异常: " + ex.getMessage()));
+                    return null;
+                });
     }
 }

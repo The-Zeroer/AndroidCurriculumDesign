@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.thezeroer.exercise.android.curriculumdesign.user"
-        minSdk = 36
+        minSdk = 31
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -37,6 +37,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(libs.swiperefreshlayout)
     annotationProcessor(libs.lombok)
     annotationProcessor(libs.room.compiler)
 

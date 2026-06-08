@@ -21,9 +21,6 @@ import java.net.InetSocketAddress;
  * @since 2026/04/08
  */
 public abstract class BaseNetworkService {
-    public static final short[] Path_AuthLogin = new short[]{11, 11};
-    public static final short[] Path_AuthLogout = new short[]{11, 12};
-
     protected final NexalithicClient nexalithicClient;
 
     public BaseNetworkService() throws IOException {
@@ -58,12 +55,14 @@ public abstract class BaseNetworkService {
         return nexalithicClient.getLinkStatus();
     }
 
+    protected abstract NexalithicClient.Builder onInitNexalithicClient(NexalithicClient.Builder nexalithicClientBuilder) throws IOException;
+
     private NexalithicClient initNexalithicClient() throws IOException {
-        return NexalithicClient
+        return onInitNexalithicClient(NexalithicClient
                 .builder()
                 .apply(LoopThread.OPTIONS.GlobalLoopBufferPool_Capacity, 2)
                 .apply(LoopThread.OPTIONS.LocalLoopBufferPool_Capacity, 16)
-                .securityPolicy(EmptyClientSecurityPolicy.INSTANCE())
+                .securityPolicy(EmptyClientSecurityPolicy.INSTANCE()))
                 .build();
     }
 }

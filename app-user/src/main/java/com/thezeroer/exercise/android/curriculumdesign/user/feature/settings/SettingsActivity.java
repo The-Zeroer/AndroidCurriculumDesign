@@ -34,7 +34,7 @@ public class SettingsActivity extends BaseActivity {
         // 3. 绑定“修改密码”并跳转对应页面
         findViewById(R.id.tv_change_pwd).setOnClickListener(v -> {
             // 跳转到修改密码页
-            startActivity(ChangePwdActivity.newIntent(this));
+            startActivity(ChangePasswordActivity.newIntent(this));
         });
     }
 

@@ -18,8 +18,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private List<MessageItem> messageList;
     private OnMessageClickListener listener;
 
+    // 升级接口：增加长按事件
     public interface OnMessageClickListener {
         void onItemClick(MessageItem message, int position);
+        void onItemLongClick(MessageItem message, int position);
     }
 
     public MessageAdapter(List<MessageItem> messageList, OnMessageClickListener listener) {
@@ -51,10 +53,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.tvUnreadBadge.setVisibility(View.GONE);
         }
 
+        // 短按点击条目进入聊天
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(message, holder.getAdapterPosition());
             }
+        });
+
+        // 🟢【新增】长按条目触发删除弹窗
+        holder.itemView.setOnLongClickListener(v -> {
+            if (listener != null) {
+                listener.onItemLongClick(message, holder.getAdapterPosition());
+                return true; // 返回 true 代表消费了长按事件，不触发短开点击
+            }
+            return false;
         });
     }
 

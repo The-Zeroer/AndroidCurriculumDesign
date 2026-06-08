@@ -1,6 +1,7 @@
 package com.thezeroer.exercise.android.curriculumdesign.admin.data.remote;
 
 import com.thezeroer.exercise.android.curriculumdesign.core.data.remote.BaseNetworkService;
+import com.thezeroer.nexalithic.client.NexalithicClient;
 
 import java.io.IOException;
 
@@ -13,5 +14,10 @@ import java.io.IOException;
  */
 public class AdminNetworkService extends BaseNetworkService {
     public AdminNetworkService() throws IOException {
+    }
+
+    @Override
+    protected NexalithicClient.Builder onInitNexalithicClient(NexalithicClient.Builder nexalithicClientBuilder) throws IOException {
+        return nexalithicClientBuilder;
     }
 }

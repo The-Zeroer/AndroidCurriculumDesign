@@ -50,6 +50,7 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         onInitView(view);
         onInitHandler();
+        onInitObserve();
         onInitData();
     }
 
@@ -80,6 +81,13 @@ public abstract class BaseFragment<VM extends BaseViewModel> extends Fragment {
      * 所有的点击事件、监听器在此处设置
      */
     protected abstract void onInitHandler();
+
+    /**
+     * 子类可选实现：初始化观察者
+     * 所有的 LiveData/Flow 监听都放在这里
+     */
+    protected void onInitObserve() {
+    }
 
     /**
      * 子类可选实现：初始化数据/请求

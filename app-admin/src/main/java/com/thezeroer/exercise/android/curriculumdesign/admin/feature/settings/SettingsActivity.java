@@ -4,6 +4,7 @@ import android.widget.ImageView;
 
 import com.thezeroer.exercise.android.curriculumdesign.admin.R;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.NoViewModel;
 
 /**
  * 设置活动
@@ -12,7 +13,7 @@ import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivi
  * @version 1.0.0
  * @since 2026/04/08
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity<NoViewModel> {
     @Override
     protected int getLayoutId() {
         // 绑定activity_settings.xml设置布局
@@ -28,7 +29,7 @@ public class SettingsActivity extends BaseActivity {
         // 2. 绑定“修改密码”并跳转对应页面
         findViewById(R.id.tv_change_pwd).setOnClickListener(v -> {
             // 跳转到修改密码页
-            startActivity(ChangePwdActivity.newIntent(this));
+            startActivity(ChangePasswordActivity.newIntent(this));
         });
     }
 

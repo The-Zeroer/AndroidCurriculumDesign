@@ -7,6 +7,8 @@ import androidx.room.Room;
 
 import com.thezeroer.exercise.android.curriculumdesign.core.data.local.BaseDataBase;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.local.entity.AuthEntity;
+import com.thezeroer.exercise.android.curriculumdesign.user.data.local.dao.ConversationDao;
+import com.thezeroer.exercise.android.curriculumdesign.user.data.local.entity.ConversationEntity;
 
 /**
  * 用户数据库
@@ -15,11 +17,16 @@ import com.thezeroer.exercise.android.curriculumdesign.core.data.local.entity.Au
  * @version 1.0.0
  * @since 2026/04/16
  */
-@Database(entities = {AuthEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {AuthEntity.class, ConversationEntity.class}, version = 3, exportSchema = false)
 public abstract class UserDataBase extends BaseDataBase {
 
     private static final String DATABASE_NAME = "curriculumdesign_user_db";
     private static volatile UserDataBase instance;
+
+    /**
+     * 获取会话数据库访问对象（新增）
+     */
+    public abstract ConversationDao conversationDao();
 
     /**
      * 获取数据库实例

@@ -2,6 +2,7 @@ package com.thezeroer.exercise.android.curriculumdesign.admin.feature.settings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,14 +13,15 @@ import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivi
 /**
  * 修改密码页面
  */
-public class ChangePwdActivity extends BaseActivity {
+public class ChangePasswordActivity extends BaseActivity<ChangePasswordViewModel> {
 
     // 静态跳转方法
     public static Intent newIntent(Context context) {
-        return new Intent(context, ChangePwdActivity.class);
+        return new Intent(context, ChangePasswordActivity.class);
     }
 
     private EditText etOldPwd, etNewPwd, etConfirmPwd;
+    private Button btnSubmit;
 
     @Override
     protected int getLayoutId() {
@@ -37,14 +39,28 @@ public class ChangePwdActivity extends BaseActivity {
         etOldPwd = findViewById(R.id.et_old_pwd);
         etNewPwd = findViewById(R.id.et_new_pwd);
         etConfirmPwd = findViewById(R.id.et_confirm_pwd);
-
-        // 提交按钮
-        findViewById(R.id.btn_submit).setOnClickListener(v -> changePassword());
+        btnSubmit = findViewById(R.id.btn_submit);
     }
 
     @Override
     protected void onInitHandler() {
+        btnSubmit.setOnClickListener(v -> changePassword());
+    }
 
+    @Override
+    protected void onInitObserve() {
+        viewModel.changePasswordStatus.observe(this, resource -> {
+            if (resource == null) return;
+            switch (resource.status) {
+                case LOADING -> {
+                    btnSubmit.setEnabled(false);
+                }
+                default -> {
+                    Toast.makeText(this, resource.message, Toast.LENGTH_SHORT).show();
+                    btnSubmit.setEnabled(true);
+                }
+            }
+        });
     }
 
     /**
@@ -73,6 +89,8 @@ public class ChangePwdActivity extends BaseActivity {
             Toast.makeText(this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        viewModel.changePassword(oldPwd, newPwd);
 
         /*// 保存新密码
         getSharedPreferences("user_info", MODE_PRIVATE)

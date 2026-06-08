@@ -3,8 +3,12 @@ package com.thezeroer.exercise.android.curriculumdesign.user;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.BaseApplication;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.local.BaseDataBase;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.remote.BaseNetworkService;
+import com.thezeroer.exercise.android.curriculumdesign.core.di.AppInjector;
 import com.thezeroer.exercise.android.curriculumdesign.user.data.local.UserDataBase;
 import com.thezeroer.exercise.android.curriculumdesign.user.data.remote.UserNetworkService;
+import com.thezeroer.exercise.android.curriculumdesign.user.data.repository.AccountProfileRepository;
+import com.thezeroer.exercise.android.curriculumdesign.user.data.repository.ConversationRepository;
+import com.thezeroer.exercise.android.curriculumdesign.user.data.repository.MessageRepository;
 
 import java.io.IOException;
 
@@ -30,5 +34,8 @@ public class UserApplication extends BaseApplication {
 
     @Override
     protected void onInit() {
+        AppInjector.registerRepository(new AccountProfileRepository());
+        AppInjector.registerRepository(new MessageRepository());
+        AppInjector.registerRepository(new ConversationRepository());
     }
 }

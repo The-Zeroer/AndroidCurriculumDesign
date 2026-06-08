@@ -39,18 +39,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ContactItem contact = contactList.get(position);
+
+        // 1. 绑定姓名与头像
         holder.tvName.setText(contact.getName());
-        holder.tvPhone.setText(contact.getPhone());
         holder.ivAvatar.setImageResource(contact.getAvatarResId());
 
-        // 条目点击
+        // 2. 【优化点】由于没有手机号数据，将 tvPhone 用作展示账号 ID，规避编译报错
+        holder.tvPhone.setText("账号: " + contact.getId());
+
+        // 条目点击事件
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(contact, position);
             }
         });
 
-        // 拨号按钮点击
+        // 拨号/呼叫按钮点击事件
         holder.ivCall.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onCallClick(contact, position);
