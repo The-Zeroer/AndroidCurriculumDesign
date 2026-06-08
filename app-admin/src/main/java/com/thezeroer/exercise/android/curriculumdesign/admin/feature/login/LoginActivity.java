@@ -21,6 +21,8 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
     private boolean isLogging = false;
     private SharedPreferences sp;
 
+    private String accountId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -91,6 +93,7 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
                 return;
             }
 
+            accountId = account;
             viewModel.login(
                     account,
                     password,
@@ -120,13 +123,16 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
                 }
                 case SUCCESS -> {
                     Toast.makeText(this, "登录成功！", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(this, MainActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("account_id", accountId);
+                    startActivity(intent);
                     finish();
                 }
                 // 这里可以跳转到主页
                 case FAILED -> {
                     btnLogin.setEnabled(true);
                     Toast.makeText(this, "登录失败：" + resource.message, Toast.LENGTH_LONG).show();
+                    accountId = null;
                 }
             }
 

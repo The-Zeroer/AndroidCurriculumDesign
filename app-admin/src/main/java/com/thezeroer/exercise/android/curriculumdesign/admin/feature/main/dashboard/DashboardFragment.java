@@ -9,8 +9,9 @@ import com.thezeroer.exercise.android.curriculumdesign.admin.R;
 import com.thezeroer.exercise.android.curriculumdesign.admin.feature.main.audits.AuditsFragment;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseFragment;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.BaseViewModel;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.NoViewModel;
 
-public class DashboardFragment extends BaseFragment {
+public class DashboardFragment extends BaseFragment<NoViewModel> {
 
     private TextView tvUserCount;
     private TextView tvAuditCount;

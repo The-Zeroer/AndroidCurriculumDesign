@@ -25,6 +25,8 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
     private Integer serverPort;
     private SharedPreferences sp;
 
+    private String accountId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -89,6 +91,7 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
             boolean rememberPwd = cbRememberPwd.isChecked();
             boolean autoLogin = cbAutoLogin.isChecked();
 
+            accountId = account;
             viewModel.login(account, password, rememberPwd, autoLogin, serverHost, serverPort);
         });
     }
@@ -107,11 +110,15 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
                     break;
                 case SUCCESS:
                     Toast.makeText(this, "登录成功！", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("account_id", accountId);
+                    startActivity(intent);
                     finish();
+                    accountId = null;
                     break;
                 case FAILED:
                     Toast.makeText(this, "登录失败：" + resource.message, Toast.LENGTH_LONG).show();
+                    accountId = null;
                     break;
             }
             btnLogin.setEnabled(true);

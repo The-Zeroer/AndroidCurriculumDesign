@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseFragment;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.NoViewModel;  // 改成 NoViewModel
+import com.thezeroer.exercise.android.curriculumdesign.user.feature.main.MainActivity;
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.settings.SettingsActivity;
 import com.thezeroer.exercise.android.curriculumdesign.user.feature.about.AboutActivity;
 
@@ -66,12 +67,12 @@ public class MenuFragment extends BaseFragment<NoViewModel> {
         textGroup.setPadding(dp2px(15), 0, 0, 0);
 
         name = new TextView(getContext());
-        name.setText("张三");
+        name.setText(MainActivity.account.getAccountName());
         name.setTextSize(20);
         name.setTextColor(0xFF000000);
 
         account = new TextView(getContext());
-        account.setText("帐号：zhangsan123");
+        account.setText("帐号：" + MainActivity.account.getAccountId());
         account.setTextSize(14);
         account.setTextColor(0xFF666666);
         account.setPadding(0, dp2px(5), 0, 0);

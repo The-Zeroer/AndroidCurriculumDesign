@@ -14,8 +14,10 @@ import com.thezeroer.exercise.android.curriculumdesign.admin.feature.main.manage
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseActivity;
 import com.thezeroer.exercise.android.curriculumdesign.admin.R;
 import com.thezeroer.exercise.android.curriculumdesign.admin.feature.main.menu.MenuFragment;
+import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.NoViewModel;
+
 // 管理员主页面（格式与用户版完全一致）
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity<NoViewModel> {
 
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;

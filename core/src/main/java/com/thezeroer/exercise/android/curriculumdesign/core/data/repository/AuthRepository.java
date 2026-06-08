@@ -1,16 +1,17 @@
 package com.thezeroer.exercise.android.curriculumdesign.core.data.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.thezeroer.exercise.android.curriculumdesign.core.base.model.Resource;
 import com.thezeroer.exercise.android.curriculumdesign.core.data.remote.BaseNetworkService;
+import com.thezeroer.exercise.android.curriculumdesign.core.enums.AccountType;
+import com.thezeroer.exercise.android.curriculumdesign.core.enums.HandlerPath;
 import com.thezeroer.exercise.android.curriculumdesign.core.di.AppInjector;
 import com.thezeroer.nexalithic.core.messaging.task.NexalithicTask;
 import com.thezeroer.nexalithic.core.messaging.task.TaskFuture;
 import com.thezeroer.nexalithic.core.model.packet.business.BusinessPacket;
 import com.thezeroer.nexalithic.core.model.packet.business.payload.TextPayload;
 import com.thezeroer.nexalithic.core.util.TextConverter;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 认证仓库
@@ -22,28 +23,23 @@ import com.thezeroer.nexalithic.core.util.TextConverter;
 public class AuthRepository extends BaseRepository {
     private final BaseNetworkService networkService = AppInjector.getNetworkService();
 
-    public LiveData<Resource<String>> login(String accountId, String accountPassword, boolean rememberMe, boolean autoLogin) {
-        MutableLiveData<Resource<String>> result = new MutableLiveData<>();
+    public CompletableFuture<Resource<String>> login(String accountId, String accountPassword, boolean rememberMe, boolean autoLogin, AccountType accountType) {
+        CompletableFuture<Resource<String>> result = new CompletableFuture<>();
         TaskFuture future = networkService.submitTask(NexalithicTask.builder()
-                .onRequest(BusinessPacket.create(BusinessPacket.Way.DEFAULT, BaseNetworkService.Path_AuthLogin)
-                        .attach(new TextPayload(TextConverter.fromArray(new String[]{
-                                accountId, accountPassword, String.valueOf(rememberMe), String.valueOf(autoLogin)}
-                ))))
+                .onRequest(BusinessPacket.create(HandlerPath.Auth_Login)
+                        .attach(new TextPayload(TextConverter.fromArray(
+                                accountId, accountPassword, String.valueOf(rememberMe), String.valueOf(autoLogin), String.valueOf(accountType.getCode())))))
                 .onResponse(response -> {
-                    if (response.getWay() == BusinessPacket.Way.RESPONSE_Succeed) {
-                        result.postValue(Resource.success());
+                    if (response.getWay() == BusinessPacket.Way.RESPONSE_Success) {
+                        result.complete(Resource.success());
                     } else {
-                        result.postValue(Resource.failed(response.getDisplayMessage(), response.getWay()));
+                        result.complete(Resource.failed(response.getDisplayMessage(), response.getWay()));
                     }
                 })
-                .onTimeout(() -> {
-                    result.postValue(Resource.failed("服务器响应超时"));
-                })
-                .onFailed(exception -> {
-                    result.postValue(Resource.error(exception));
-                }));
+                .onTimeout(() -> result.complete(Resource.failed("服务器响应超时")))
+                .onFailed(exception -> result.complete(Resource.error(exception))));
         if (future == null) {
-            result.setValue(Resource.failed("操作失败，请稍后重试"));
+            result.complete(Resource.failed("操作失败，请稍后重试"));
         }
         return result;
     }

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.thezeroer.nexalithic.core.model.packet.business.BusinessPacket;
 
+import lombok.Getter;
+
 /**
  * 统一资源状态包装类
  *
@@ -11,6 +13,7 @@ import com.thezeroer.nexalithic.core.model.packet.business.BusinessPacket;
  * @version 1.0.0
  * @since 2026/04/16
  */
+@Getter
 public class Resource<T> {
     public enum Status { SUCCESS, FAILED, LOADING }
 
@@ -39,17 +42,23 @@ public class Resource<T> {
     public static <T> Resource<T> success(@Nullable T data) {
         return new Resource<>(Status.SUCCESS, data, null, null);
     }
+    public static <T> Resource<T> success(@Nullable String message) {
+        return new Resource<>(Status.SUCCESS, null, message, null);
+    }
+    public static <T> Resource<T> success(@Nullable T data, @Nullable String message) {
+        return new Resource<>(Status.SUCCESS, data, message, null);
+    }
 
     public static <T> Resource<T> success(@Nullable T data, @Nullable BusinessPacket.Way way) {
         return new Resource<>(Status.SUCCESS, data, null, way);
     }
 
-    public static <T> Resource<T> failed(@NonNull String msg, @Nullable BusinessPacket.Way way) {
-        return new Resource<>(Status.FAILED, null, msg, way);
-    }
-
     public static <T> Resource<T> failed(@Nullable String msg) {
         return new Resource<>(Status.FAILED, null, (msg == null || msg.isEmpty()) ? "操作失败，请稍后重试" : msg, null);
+    }
+
+    public static <T> Resource<T> failed(@NonNull String msg, @Nullable BusinessPacket.Way way) {
+        return new Resource<>(Status.FAILED, null, msg, way);
     }
 
     public static <T> Resource<T> error(@Nullable Exception exception) {

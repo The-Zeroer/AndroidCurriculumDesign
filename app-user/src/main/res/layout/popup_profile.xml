@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="张伟"
+            android:text=""
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#1F1F1F"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="zhang.wei@example.com"
+            android:text=""
             android:textSize="14sp"
             android:textColor="#757575"
             android:gravity="center" />
@@ -60,7 +60,7 @@
             android:id="@+id/tv_popup_account_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="账号ID: 1002345"
+            android:text=""
             android:textSize="13sp"
             android:textColor="#757575"
             android:gravity="center" />

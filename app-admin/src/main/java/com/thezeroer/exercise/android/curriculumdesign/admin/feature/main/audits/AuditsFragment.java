@@ -1,5 +1,6 @@
 package com.thezeroer.exercise.android.curriculumdesign.admin.feature.main.audits;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -8,57 +9,67 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thezeroer.exercise.android.curriculumdesign.admin.R;
 import com.thezeroer.exercise.android.curriculumdesign.core.base.view.BaseFragment;
-import com.thezeroer.exercise.android.curriculumdesign.core.base.viewmodel.BaseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuditsFragment extends BaseFragment {
+public class AuditsFragment extends BaseFragment<AuditsViewMode> {
 
-    private RecyclerView recyclerView;
-    private AuditAdapter adapter;
-    private List<AuditItem> auditList;
+    private RecyclerView rvLogs;
+    private AuditLogAdapter adapter;
+    private final List<String> logFileList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_audits;
+        return R.layout.fragment_audits; // 需要你自己创建一个包含 RecyclerView 的基础布局
     }
 
     @Override
     protected void onInitView(View view) {
-        recyclerView = view.findViewById(R.id.recycler_audits);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvLogs = view.findViewById(R.id.rv_logs);
+        rvLogs.setLayoutManager(new LinearLayoutManager(getContext()));
+        
+        adapter = new AuditLogAdapter(logFileList, fileName -> {
+            // 点击跳转到日志详情页
+            AuditDetailFragment detailFragment = new AuditDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("file_name", fileName);
+            detailFragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, detailFragment) // 确保 ID 与主 Activity 对应
+                    .addToBackStack(null)
+                    .commit();
+        });
+        
+        rvLogs.setAdapter(adapter);
     }
 
     @Override
-    protected void onInitHandler() {
-        initData();
-        setAdapter();
-    }
+    protected void onInitHandler() { }
 
-    private void initData() {
-        auditList = new ArrayList<>();
-        auditList.add(new AuditItem(1, "用户实名认证", "申请人：小明  2025-01-10"));
-        auditList.add(new AuditItem(2, "内容发布审核", "申请人：小红  2025-01-10"));
-        auditList.add(new AuditItem(3, "订单退款审核", "申请人：小刚  2025-01-09"));
-    }
-
-    private void setAdapter() {
-        adapter = new AuditAdapter(auditList, new AuditAdapter.OnAuditListener() {
-            @Override
-            public void onAccept(int position) {
-                auditList.remove(position);
-                adapter.notifyItemRemoved(position);
-                Toast.makeText(getContext(), "审核通过", Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onInitObserve() {
+        if (viewModel == null) return;
+        
+        viewModel.getLogList().observe(getViewLifecycleOwner(), files -> {
+            logFileList.clear();
+            if (files != null) {
+                logFileList.addAll(files);
             }
-
-            @Override
-            public void onReject(int position) {
-                auditList.remove(position);
-                adapter.notifyItemRemoved(position);
-                Toast.makeText(getContext(), "已拒绝", Toast.LENGTH_SHORT).show();
-            }
+            adapter.notifyDataSetChanged();
         });
-        recyclerView.setAdapter(adapter);
+
+        viewModel.getToastEvent().observe(getViewLifecycleOwner(), msg -> 
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show()
+        );
+    }
+
+    @Override
+    protected void onInitData() {
+        if (viewModel != null) {
+            viewModel.fetchLogList();
+        }
     }
 }

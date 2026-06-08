@@ -1,4 +1,4 @@
-package com.thezeroer.exercise.android.curriculumdesign.user.feature.main.profile;
+package com.thezeroer.exercise.android.curriculumdesign.user.feature.profile;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -20,9 +20,9 @@ public class ProfilePopup {
     private View popupView;
 
     // 可自定义的用户信息
-    private String userName = "张伟";
-    private String userEmail = "zhang.wei@example.com";
-    private String accountId = "1002345";
+    private String userName = "";
+    private String userEmail = "";
+    private String accountId = "";
     private int avatarResId = R.drawable.ic_contacts;
 
     public ProfilePopup(Context context) {

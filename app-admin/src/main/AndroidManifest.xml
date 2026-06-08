@@ -33,7 +33,7 @@
             android:exported="true" />
 
         <!-- 修改密码页：ChangePwdActivity-->
-        <activity android:name=".feature.settings.ChangePwdActivity"/>
+        <activity android:name=".feature.settings.ChangePasswordActivity"/>
     </application>
 
 </manifest>
